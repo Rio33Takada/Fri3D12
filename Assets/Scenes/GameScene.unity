@@ -12531,9 +12531,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   animator: {fileID: 1792519344}
   speedMax: 5
-  accel: 10
+  accel: 60
   rotateSpeed: 20
-  jumpSpeed: 12
+  jumpSpeed: 10
   groundNormalYMin: 0.7
   groundDamping: 8
   airDamping: 0.2
