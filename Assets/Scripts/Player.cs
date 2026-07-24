@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float groundNormalYMin = 0.7f;
     [SerializeField] private float groundDamping = 8f;
     [SerializeField] private float airDamping = 0.2f;
+    [SerializeField] private Vector3 fireOffset = new Vector3(0, 0.9f, 0.2f);
+    [SerializeField] private float fireSpeed = 20;
 
 
     private PlayerInput playerInput;
@@ -22,6 +24,7 @@ public class Player : MonoBehaviour
     private bool isGrounded;
 
     private Vector2 accelVec;
+    private GameObject firePrefab;
 
     private void Awake()
     {
@@ -128,6 +131,23 @@ public class Player : MonoBehaviour
         {
             Vector3 jumpVec = new Vector3(0, jumpSpeed, 0);
             rb.AddForce(jumpVec, ForceMode.VelocityChange);
+        }
+    }
+
+    private void Attack()
+    {
+        if (playerInput.actions["Attack"].WasPressedThisFrame())
+        {
+            var position = transform.position + transform.TransformVector(fireOffset);
+
+            var fireObj = Object.Instantiate(firePrefab, position, transform.rotation);
+
+            var fireRB = fireObj.GetComponent<Rigidbody>();
+
+            if (fireRB != null)
+            {
+                fireRB.linearVelocity = transform.forward * fireSpeed;
+            }
         }
     }
 

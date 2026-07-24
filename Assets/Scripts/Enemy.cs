@@ -8,10 +8,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float rotateSpeed = 3;
     [SerializeField] private float sightRange = 3;
     [SerializeField] private float sightAngle = 45;
+    [SerializeField] private int hp = 2;
+    [SerializeField] private float invincibleTimeMax = 0.5f;
+    [SerializeField] private float knockbackSpeed = 5;
 
     public Collider playerCollider { get; set; }
 
     private Rigidbody rb;
+    private float invincibleTime;
 
     private void Start()
     {
@@ -47,6 +51,24 @@ public class Enemy : MonoBehaviour
             if (tempForward != Vector3.zero)
             {
                 transform.forward = tempForward;
+            }
+
+            if (invincibleTime > 0)
+            {
+                invincibleTime -= Time.deltaTime;
+            }
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        var attackObj = collision.gameObject.GetComponent<AttackObject>();
+        if (attackObj != null && invincibleTime <= 0)
+        {
+            hp -= attackObj.power;
+            if (hp <= 0)
+            {
+                Destroy(gameObject);
             }
         }
     }
