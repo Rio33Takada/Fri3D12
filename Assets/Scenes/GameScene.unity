@@ -12537,6 +12537,9 @@ MonoBehaviour:
   groundNormalYMin: 0.7
   groundDamping: 8
   airDamping: 0.2
+  fireOffset: {x: 0, y: 0.9, z: 0.2}
+  fireSpeed: 1
+  firePrefab: {fileID: 725547654335041027, guid: aaefb316534c7aa4883364cfc79e7a51, type: 3}
 --- !u!136 &862703881
 CapsuleCollider:
   m_ObjectHideFlags: 0

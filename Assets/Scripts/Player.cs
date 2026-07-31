@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     private bool isGrounded;
 
     private Vector2 accelVec;
-    private GameObject firePrefab;
+    [SerializeField] private GameObject firePrefab;
 
     private void Awake()
     {
@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
 
         if (isGrounded)
         {
-
+            Attack();
 
             accelVec = playerInput.actions["Move"].ReadValue<Vector2>();
 
