@@ -12,7 +12,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float invincibleTimeMax = 0.5f;
     [SerializeField] private float knockbackSpeed = 5;
 
-    public Collider playerCollider { get; set; }
+    [SerializeField] private EnemyCounter enemyCounter;
+
+    public Collider PlayerCollider { get; set; }
 
     private Rigidbody rb;
     private float invincibleTime;
@@ -24,7 +26,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        var target = playerCollider.bounds.center;
+        var target = PlayerCollider.bounds.center;
 
         target.y = transform.position.y;
 
@@ -46,7 +48,7 @@ public class Enemy : MonoBehaviour
 
             // 前方向をターゲットに向かって補間
 
-            var tempForward = Vector3.Slerp(forward, direction.normalized, rotateSpeed);
+            var tempForward = Vector3.Slerp(forward, direction.normalized, rotateSpeed * Time.deltaTime);
 
             if (tempForward != Vector3.zero)
             {
@@ -60,14 +62,15 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerStay(Collider collider)
     {
-        var attackObj = collision.gameObject.GetComponent<AttackObject>();
+        var attackObj = collider.gameObject.GetComponent<AttackObject>();
         if (attackObj != null && invincibleTime <= 0)
         {
             hp -= attackObj.power;
             if (hp <= 0)
             {
+                enemyCounter.EnemyDeath();
                 Destroy(gameObject);
             }
         }
@@ -81,7 +84,7 @@ public class Enemy : MonoBehaviour
         if (Physics.Raycast(origin, direction.normalized,
             out var hitInfo, sightRange))
         {
-            if (hitInfo.collider != playerCollider)
+            if (hitInfo.collider != PlayerCollider)
             {
                 // プレイヤー以外の障害物に当たった場合は見えない1
                 isSeenPlayer = false;

@@ -26,11 +26,16 @@ public class Player : MonoBehaviour
     private Vector2 accelVec;
     [SerializeField] private GameObject firePrefab;
 
+    private ModularStateMachine _stateMachine;
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody>();
         rb.sleepThreshold = -1;
+
+        _stateMachine = new ModularStateMachine();
+        _stateMachine.AddModule(new HierarchyModule());
     }
 
     private void Update()
@@ -64,6 +69,8 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        _stateMachine.Tick();
+
         // å∏êäÇínè„Ç∆ãÛíÜÇ≈ïœÇ¶ÇÈ
         ApplyDamping();
 
@@ -141,6 +148,7 @@ public class Player : MonoBehaviour
             var position = transform.position + transform.TransformVector(fireOffset);
 
             var fireObj = Object.Instantiate(firePrefab, position, transform.rotation);
+            Destroy(fireObj, 3.0f);
 
             var fireRB = fireObj.GetComponent<Rigidbody>();
 

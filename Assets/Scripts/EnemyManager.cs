@@ -10,7 +10,7 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (var enemy in enemies)
         {
-            enemy.playerCollider = playerCollider;
+            enemy.PlayerCollider = playerCollider;
         }
     }
 }
