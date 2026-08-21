@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
 
     private ModularStateMachine _stateMachine;
 
+    [SerializeField] private Transform playerRespawnPos;
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -55,6 +57,8 @@ public class Player : MonoBehaviour
         //transform.position += moveVec3D * Time.deltaTime;
 
         //transform.forward = Vector3.Lerp(transform.forward, moveVec3D.normalized, 0.1f);
+
+        Respawn();
 
         if (isGrounded)
         {
@@ -177,6 +181,14 @@ public class Player : MonoBehaviour
         else
         {
             rb.linearDamping = airDamping;
+        }
+    }
+
+    private void Respawn()
+    {
+        if (playerInput.actions["Respawn"].WasPressedThisFrame())
+        {
+            transform.position = playerRespawnPos.position;
         }
     }
 
